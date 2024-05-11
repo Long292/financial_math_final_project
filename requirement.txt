@@ -1,0 +1,8 @@
+streamlit 
+pandas
+math
+requests
+numpy 
+matplotlib
+datetime
+yfinance
