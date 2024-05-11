@@ -4,6 +4,5 @@ math
 requests
 numpy 
 matplotlib
-matplotlib.pyplot
 datetime
 yfinance
