@@ -3,6 +3,7 @@ import pandas as pd
 import math
 import requests
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import yfinance as yf
