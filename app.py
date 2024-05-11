@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import math
+# import math
 import requests
 import numpy as np
 import matplotlib
@@ -87,7 +87,7 @@ def calculate_expected_return(principal, rate, tenor, tenor_unit, interest_type,
     elif interest_type == "simple":
         future_value = principal * (1 + rate_decimal * tenor_years)
     elif interest_type == "continuous":
-        future_value = principal * math.exp(rate_decimal * tenor_years)
+        future_value = principal * 2.718282**(rate_decimal * tenor_years)
 
     return future_value
 # Daily tracking function
@@ -136,7 +136,7 @@ def investment_value_on_date(principal, rate, tenor, tenor_unit, interest_type, 
     if interest_type == 'simple':
         value = principal * (1 + rate_decimal * years_since_start)
     elif interest_type == 'continuous':
-        value = principal * math.exp(rate_decimal * years_since_start)
+        value = principal * 2.718282**(rate_decimal * years_since_start)
     else:
         compounding_periods = {
             'compounded_daily': 365,
