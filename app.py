@@ -1,3 +1,48 @@
+import streamlit as st
+import pandas as pd
+import math
+import requests
+import numpy as np
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
+import yfinance as yf
+
+# Define variables
+# total_years = 51
+# interest_rate = 0.08
+# withdrawal_year_23 = 850  # in MVND
+# withdrawal_increase = 0.04
+
+# # Title andの説明 (description in Japanese)
+# st.title("A person decides to deposit a constant amount P at the begin of each of the next 21 years, with a constant interest rate 8% per year compounded yearly. For year 23 th, the person desires to withdraw 850 MVND for spending. For the years after (from year 24 th) until year 51 th, the yearly amount withdrew increases by 4% annually to avoid the effect of inflation. Note that no money left over after year 51 th. To obtain this goal, what is the value of P in MVND?")
+# # st.write("毎年の年初に一定額を預金し、23年目以降は毎年引き出し額を増やしていく場合の将来の貯蓄額をシミュレーションします。")
+
+# # Input for P value
+# p_value = st.number_input("Money (MVND) to deposit each year", min_value=0.0)
+# total_years = st.number_input("Total year", min_value=1)
+# interest_rate = st.number_input("Interst rate", min_value=0.0)
+# year_start_withdraw = int(st.number_input("Year to start withdrawn money"))
+# withdrawal_year_23 = st.number_input("Money withdrawn at first year", min_value=0.0)
+# withdrawal_increase = st.number_input("Withdrawal Increase per year", min_value=0.0)
+# # Calculate future values
+# future_values = [0] * total_years
+
+# for year in range(1, year_start_withdraw):
+#     P = future_values[year - 1] * (1 + interest_rate) + p_value
+#     future_values[year] = P
+
+# for year in range(year_start_withdraw, total_years):
+#     withdrawal = withdrawal_year_23 * (1 + withdrawal_increase) ** (year - year_start_withdraw)
+#     future_values[year] = future_values[year - 1] * (1 + interest_rate) - withdrawal
+
+# # Display results
+# st.write("Future value:", future_values[-1], "MVND")
+
+# # Plot future values
+# st.line_chart(future_values)
+# st.xlabel("P")
+# st.ylabel("future value (MVND)")
+
 def ordinal(n: int):
     if 11 <= (n % 100) <= 13:
         suffix = 'th'
