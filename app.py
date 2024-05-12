@@ -198,11 +198,11 @@ def saving_management():
         rate = float(st.number_input("Enter the interest rate (percentage per year):", min_value=0.0, key = i+0.5 ))
         tenor = float(st.number_input("Enter the tenor: ", min_value=0.0, key = i+0.75))
         tu_option = st.selectbox(
-        "Select the unit of tenor (days, months, years):",
+        "Select the unit of tenor:",
         ("days", "months", "years"), key = i+0.25)
         # st.write("You selected:", option)
         it_option = st.selectbox(
-        "Select the unit of tenor (days, months, years):",
+        "Select the interest type:",
         ('compounded_daily', 'compounded_monthly', 'compounded_quarterly', 'compounded_semi_yearly', 'compounded_yearly'), key = i+0.55)
         tenor_unit = tu_option
         interest_type = it_option
@@ -263,11 +263,11 @@ def saving_planning_strategy():
         rate = float(st.number_input("Enter the interest rate (percentage per year): ", min_value=0.0, key = i+0.1))
         tenor = float(st.number_input("Enter the tenor: ", min_value=0.0, key = i+0.2))
         tu_option = st.selectbox(
-        "Select the unit of tenor (days, months, years):",
+        "Select the unit of tenor:",
         ("days", "months", "years"), key = i + 0.3)
         tenor_unit = tu_option
         it_option = st.selectbox(
-        "Select the unit of tenor (days, months, years):",
+        "Select the interest type:",
         ('compounded_daily', 'compounded_monthly', 'compounded_quarterly', 'compounded_semi_yearly', 'compounded_yearly'), key = i + 0.5)
         interest_type = it_option
         d = '2023-05-05'
@@ -524,7 +524,7 @@ def stock_portfolio_management():
     for i in range(stock_nums):
         st.subheader("The " + str(ordinal(i+1)) + " stock information input:" )
         # Input
-        ticker = st.text_input("Enter the stock " + str(i) +" ticker: ", key = i)
+        ticker = st.text_input("Enter the stock " + str(ordinal(i+1)) +" ticker: ", key = i)
         tickers.append(ticker)
         quantity = int(st.number_input("Enter the quantity of shares: ", key = i + 0.5))
         quantities.append(quantity)
