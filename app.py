@@ -313,6 +313,77 @@ def saving_planning_strategy():
    
 
 #Stock managemenet:
+def calculate_investment_details(tickers, initial_prices, quantities, purchase_dates):
+    """
+    Calculate the investment details using tickers, initial prices, quantities, and purchase dates.
+
+    Args:
+    tickers (list of str): Stock tickers/codes.
+    initial_prices (list of float): Initial prices of the stocks when purchased.
+    quantities (list of int): Number of shares of each stock purchased.
+    purchase_dates (list of str): Purchase dates of each stock.
+
+    Returns:
+    dict: Details of the investment including total initial investment, total present value, and individual returns.
+          Also provides visualizations for stock price history and volatility.
+    """
+    current_prices = fetch_current_prices(tickers)
+    investments = []
+    total_initial_investment = 0
+    total_present_value = 0
+    total_return = 0
+
+    for ticker, initial_price, quantity, purchase_date in zip(tickers, initial_prices, quantities, purchase_dates):
+        current_price = current_prices[ticker]
+        initial_investment = initial_price * quantity
+        present_value = current_price * quantity
+        individual_return = present_value - initial_investment
+        roi = (individual_return / initial_investment) * 100
+
+        total_initial_investment += initial_investment
+        total_present_value += present_value
+        total_return += individual_return
+
+        investments.append({
+            "Ticker": ticker,
+            "Initial Price": initial_price,
+            "Quantity": quantity,
+            "Purchase Date": purchase_date,
+            "Current Price": current_price,
+            "Initial Investment": initial_investment,
+            "Present Value": present_value,
+            "Individual Return": individual_return,
+            "ROI (%)": roi
+        })
+
+    # Visualization of price history and volatility
+    fig, axs = plt.subplots(len(tickers), 2, figsize=(15, 5 * len(tickers)))
+    for idx, investment in enumerate(investments):
+        ticker = investment["Ticker"]
+        # Historical price chart
+        historical_prices = fetch_historical_prices(ticker, investment["Purchase Date"])
+        axs[idx][0].plot(historical_prices.index, historical_prices.values)
+        axs[idx][0].set_title(f'Price History of {ticker}')
+        axs[idx][0].set_xlabel('Date')
+        axs[idx][0].set_ylabel('Price (USD)')
+
+        # Volatility chart
+        daily_returns = historical_prices.pct_change()
+        axs[idx][1].bar(daily_returns.index, daily_returns.values)
+        axs[idx][1].set_title(f'Volatility of {ticker}')
+        axs[idx][1].set_xlabel('Date')
+        axs[idx][1].set_ylabel('Daily Returns')
+
+    plt.tight_layout()
+    plt.show()
+
+    return {
+        "Total Initial Investment": total_initial_investment,
+        "Total Present Value": total_present_value,
+        "Total Return": total_return,
+        "Investment Details": investments
+    }
+       
 def fetch_current_prices(tickers):
     """
     Fetches the current prices for the given stock tickers using Yahoo Finance.
@@ -330,8 +401,19 @@ def fetch_current_prices(tickers):
             # If there's an issue with fetching, prompt user for manual input
             prices[ticker] = float(input(f"Enter the current price for {ticker} manually (USD): "))
     return prices
+def fetch_historical_prices(ticker, start_date):
+    """
+    Fetches historical prices for a single stock ticker from the specified start date to the present, using Yahoo Finance.
+    """
+    stock = yf.Ticker(ticker)
+    try:
+        hist = stock.history(start=start_date)
+        return hist['Close']
+    except Exception as e:
+        print(f"Failed to fetch historical data for {ticker}: {str(e)}")
+        return pd.Series()
 # Stock Analysis function
-def calculate_investment_details(tickers, initial_prices, quantities):
+def calculate_investment_details(tickers, initial_prices, quantities, purchase_dates):
     """
     Calculate the investment details using tickers, initial prices, and quantities.
 
@@ -344,36 +426,90 @@ def calculate_investment_details(tickers, initial_prices, quantities):
     dict: Details of the investment.
     """
     current_prices = fetch_current_prices(tickers)
-    total_initial_investment = sum(price * quantity for price, quantity in zip(initial_prices, quantities))
-    total_present_value = sum(current_prices[ticker] * quantity for ticker, quantity in zip(tickers, quantities))
-    individual_returns = [(current_prices[ticker] - initial) / initial for ticker, initial in zip(tickers, initial_prices)]
+    investments = []
+    total_initial_investment = 0
+    total_present_value = 0
+    total_return = 0
 
-    # Volatility plot
-    # Create a new figure and set its size
-    fig, ax = plt.subplots(figsize=(10, 6))
+    for ticker, initial_price, quantity, purchase_date in zip(tickers, initial_prices, quantities, purchase_dates):
+        current_price = current_prices[ticker]
+        initial_investment = initial_price * quantity
+        present_value = current_price * quantity
+        individual_return = present_value - initial_investment
+        roi = (individual_return / initial_investment) * 100
 
-    # Plot the data
-    ax.plot(individual_returns, 'o-')
+        total_initial_investment += initial_investment
+        total_present_value += present_value
+        total_return += individual_return
 
-    # Set the title and labels
-    ax.set_title('Volatility Plot for Individual Stocks')
-    ax.set_xlabel('Stocks')
-    ax.set_ylabel('Returns')
+        investments.append({
+            "Ticker": ticker,
+            "Initial Price": initial_price,
+            "Quantity": quantity,
+            "Purchase Date": purchase_date,
+            "Current Price": current_price,
+            "Initial Investment": initial_investment,
+            "Present Value": present_value,
+            "Individual Return": individual_return,
+            "ROI (%)": roi
+        })
 
-    # Set the xticks
-    ax.set_xticks(range(len(tickers)))
-    ax.set_xticklabels(tickers)
+    # Visualization of price history and volatility
+    fig, axs = plt.subplots(len(tickers), 2, figsize=(15, 5 * len(tickers)))
 
-    # Enable grid
-    ax.grid(True)
+    # Check the shape of axs and adjust indexing accordingly
+    if len(tickers) == 1:
+        axs = np.array([axs])
 
-    # Display the plot in Streamlit
+    for idx, investment in enumerate(investments):
+        ticker = investment["Ticker"]
+        # Historical price chart
+        historical_prices = fetch_historical_prices(ticker, investment["Purchase Date"])
+        axs[idx][0].plot(historical_prices.index, historical_prices.values)
+        axs[idx][0].set_title(f'Price History of {ticker}')
+        axs[idx][0].set_xlabel('Date')
+        axs[idx][0].set_ylabel('Price (USD)')
+
+        # Volatility chart
+        daily_returns = historical_prices.pct_change()
+        axs[idx][1].bar(daily_returns.index, daily_returns.values)
+        axs[idx][1].set_title(f'Volatility of {ticker}')
+        axs[idx][1].set_xlabel('Date')
+        axs[idx][1].set_ylabel('Daily Returns')
+
+    plt.tight_layout()
     st.pyplot(fig)
+
+
+
+
+    # # Volatility plot
+    # # Create a new figure and set its size
+    # fig, ax = plt.subplots(figsize=(10, 6))
+
+    # # Plot the data
+    # ax.plot(individual_returns, 'o-')
+
+    # # Set the title and labels
+    # ax.set_title('Volatility Plot for Individual Stocks')
+    # ax.set_xlabel('Stocks')
+    # ax.set_ylabel('Returns')
+
+    # # Set the xticks
+    # ax.set_xticks(range(len(tickers)))
+    # ax.set_xticklabels(tickers)
+
+    # # Enable grid
+    # ax.grid(True)
+
+    # # Display the plot in Streamlit
+    # st.pyplot(fig)
 
     return {
         "Total Initial Investment": total_initial_investment,
         "Total Present Value": total_present_value,
-        "Individual Returns": individual_returns
+        "Total Return": total_return,
+        "Investment Details": investments
     }
 # Stock Portfolio Management
 def stock_portfolio_management():
@@ -382,6 +518,7 @@ def stock_portfolio_management():
     tickers = []
     initial_prices = []
     quantities = []
+    purchase_dates = []
     more_stocks = True
     stock_nums = st.number_input("How many stock are you holding?", min_value=0)
     for i in range(stock_nums):
@@ -393,6 +530,11 @@ def stock_portfolio_management():
         quantities.append(quantity)
         initial_price = float(st.number_input("Enter the initial price per share (VND): ", key = i+0.75))
         initial_prices.append(initial_price)
+        d = '2023-05-05'
+        d = st.date_input("Enter the purchase date (YYYY-MM-DD)", key = i + 0.4)
+        st.write("Your purchase date is:", d)
+        purchase_date = d.strftime("%Y-%m-%d")
+        purchase_dates.append(purchase_date)
 
         # Store each stock's data
         data.append({
@@ -401,9 +543,13 @@ def stock_portfolio_management():
             "Initial Price": initial_price
         })
     if st.button("Start calculate", type = "primary"):
-        investment_details = calculate_investment_details(tickers, initial_prices, quantities)
+        results = calculate_investment_details(tickers, initial_prices, quantities, purchase_dates)
+        investment_details = results["Investment Details"]
         # Display results
         st.write("Investment Details:", investment_details)
+        st.write("Total Initial Investment:", results["Total Initial Investment"])
+        st.write("Total Present Value:", results["Total Present Value"])
+        st.write("Total Return:", results["Total Return"])
         df = pd.DataFrame(data)
         st.dataframe(df) 
 
@@ -421,6 +567,3 @@ page_names_to_funcs = {
 
 demo_name = st.sidebar.selectbox("Choose a function", page_names_to_funcs.keys())
 page_names_to_funcs[demo_name]()
-
-
-
