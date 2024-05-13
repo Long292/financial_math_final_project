@@ -598,7 +598,7 @@ def stock_portfolio_management():
         tickers.append(ticker)
         quantity = int(st.number_input("Enter the quantity of shares: ", key = i + 0.5))
         quantities.append(quantity)
-        initial_price = float(st.number_input("Enter the initial price per share (VND): ", key = i+0.75))
+        initial_price = float(st.number_input("Enter the initial price per share (USD): ", key = i+0.75))
         initial_prices.append(initial_price)
         d = '2023-05-05'
         d = st.date_input("Enter the purchase date (YYYY-MM-DD)", key = i + 0.4)
