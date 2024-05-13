@@ -322,55 +322,55 @@ def saving_planning_strategy():
 
     # Create DataFrame
     # df = pd.DataFrame(data)
-    from selenium import webdriver
-    from bs4 import BeautifulSoup
-    import pandas as pd
-    import time
+    # from selenium import webdriver
+    # from bs4 import BeautifulSoup
+    # import pandas as pd
+    # import time
 
-    # URL of the webpage you want to scrape
-    url = 'https://s.cafef.vn/lai-suat-ngan-hang.chn'
+    # # URL of the webpage you want to scrape
+    # url = 'https://s.cafef.vn/lai-suat-ngan-hang.chn'
 
-    # Create a new instance of the Firefox driver
-    driver = webdriver.Firefox()
+    # # Create a new instance of the Firefox driver
+    # driver = webdriver.Firefox()
 
-    # Go to the URL
-    driver.get(url)
+    # # Go to the URL
+    # driver.get(url)
 
-    # Wait for the dynamically loaded elements to load
-    time.sleep(5)
+    # # Wait for the dynamically loaded elements to load
+    # time.sleep(5)
 
-    # Parse the HTML of the page with BeautifulSoup
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    # # Parse the HTML of the page with BeautifulSoup
+    # soup = BeautifulSoup(driver.page_source, 'html.parser')
 
-    # Find the table with the id 'tb-interest-rate'
-    table = soup.find('tbody', {'id': 'tb-interest-rate'})
+    # # Find the table with the id 'tb-interest-rate'
+    # table = soup.find('tbody', {'id': 'tb-interest-rate'})
 
-    # Create empty lists to hold data
-    banks = []
-    interest_rates = []
+    # # Create empty lists to hold data
+    # banks = []
+    # interest_rates = []
 
-    # Loop through each row in the table
-    for row in table.find_all('tr'):
-        # Get the bank name and image url
-        bank = {'Tên ngân hàng': row.find('span').text}
-        banks.append(bank)
+    # # Loop through each row in the table
+    # for row in table.find_all('tr'):
+    #     # Get the bank name and image url
+    #     bank = {'Tên ngân hàng': row.find('span').text}
+    #     banks.append(bank)
         
-        # Get the interest rates
-        rates = [td.text for td in row.find_all('td')[1:]]
-        interest_rates.append(rates)
+    #     # Get the interest rates
+    #     rates = [td.text for td in row.find_all('td')[1:]]
+    #     interest_rates.append(rates)
 
-    # Convert the lists into DataFrames
-    df_banks = pd.DataFrame(banks)
-    df_interest_rates = pd.DataFrame(interest_rates, columns=['Không kỳ hạn', '1 Tháng', '3 Tháng', '6 Tháng', '9 Tháng', '12 Tháng', '18 Tháng', '24 Tháng'])
+    # # Convert the lists into DataFrames
+    # df_banks = pd.DataFrame(banks)
+    # df_interest_rates = pd.DataFrame(interest_rates, columns=['Không kỳ hạn', '1 Tháng', '3 Tháng', '6 Tháng', '9 Tháng', '12 Tháng', '18 Tháng', '24 Tháng'])
 
-    # Concatenate the DataFrames
-    df_b = pd.concat([df_banks, df_interest_rates], axis=1)
+    # # Concatenate the DataFrames
+    # df_b = pd.concat([df_banks, df_interest_rates], axis=1)
 
-    # Close the browser
-    driver.quit()
+    # # Close the browser
+    # driver.quit()
 
-    # Display the DataFrame as a table on your website
-    st.dataframe(df_b) 
+    # # Display the DataFrame as a table on your website
+    # st.dataframe(df_b) 
     if st.button("Start calculate", type = "primary"):
          # Main function call
         df = pd.DataFrame(data)
