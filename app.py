@@ -151,29 +151,50 @@ def investment_value_on_date(principal, rate, tenor, tenor_unit, interest_type, 
     return value
 def intro():
     import streamlit as st
-    st.write("# Welcome to Our Demo! 👋")
+    st.write("# Welcome to Final Project - PlaMa (Planning and Management)! 👋")
     st.sidebar.success("Select a funciton above.")
 
     st.markdown(
         """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
+        ### Saving management 
+        **How to set up saving management? 
+        - Step 1: Enter the saving management section 
+        - Step 2: Enter the input details 
+          + Initial deposit amount 
+          + Interest rate: What is the annual interest rate that you intend to deposit? 
+          + Tenor: How long do you intend to save this money? 
+          + Type of interest: What is the compound period of this money? 
+          + Start date: The date which you intend to deposit/ deposited the money 
+          + Location: Enter the bank which you are currently saving in 
+        - Step 3: Reading the results 
+        **How to know how much money you saved per month? 
+        - Access the monthly return summary chart
+        - Without any withdrawal, this should go up as time goes 
+        
+        ### Saving planning  
+        - Step 1: Input your planned deposit, interest rate rate product of choice, and tenor 
+        - Step 2: Reading the results
+        
+        ### Stock management 
+        **How to know the current state of the portfolio and the stocks? 
+        Step 1: Enter portfolio management 
+        Step 2: View stock volume, current price, volatility of portfolio 
+        **How do you know whether the portfolio is efficient 
+        - Action: Compare sharpe ratio of the portfolio to sharpe ratio inserted of VN30 
+        - Determining point: 
+          + If the sharpe ratio is larger → the portfolio is good 
+          + If the sharpe ratio is less → changes need to be made
+        
+        ### Stock planning 
+        **How do you determine which stock to add, and how it is relevant to your portfolio? 
+        - Action: Compare the stock return, volatility and sharpe ratio of the stock to the stock return, volatility and sharpe ratio of your portfolio. 
+        - Determining point: If the sharpe ratio of the stock is higher than the sharpe ratio of your portfolio, that is a good sign to add this stock into your portfolio 
+        **How do you know the point in which you should sell or buy stocks? 
+        -Action: You will compare the sharpe ratio at different times. 
+        -Determining point: If there is a steep decrease in the Sharpe ratio over the course of 3 days, check for the news and continue doing analyses 
 
-        **👈 Select a demo from the dropdown on the left** to see some examples
-        of what Streamlit can do!
 
-        ### Want to learn more?
-
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-
-        ### See more complex demos
-
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+        
     """
     )
 
